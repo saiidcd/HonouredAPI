@@ -1,10 +1,10 @@
 ﻿using Honoured.Artists;
 using Honoured.Enumerations;
+using Honoured.Markets;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Domain.Services;
 
 namespace Honoured.ArtistSubscriptions
@@ -14,23 +14,32 @@ namespace Honoured.ArtistSubscriptions
         #region Fields
         private IArtistSubscriptionRepository _repo;
         private ArtistManager _artistManager;
+        private MarketsManager _marketsManager;
+        private IRepository<SubscriptionTier, long> _tierRepo;
         #endregion Fields
 
 
         #region Ctors
-        public ArtistSubsriptionManager(IArtistSubscriptionRepository repo, ArtistManager artistManager)
+        public ArtistSubsriptionManager(IArtistSubscriptionRepository repo,
+                                        IRepository<SubscriptionTier, long> tierRepo,
+                                        ArtistManager artistManager,
+                                        MarketsManager marketsManager)
         {
             _repo = repo;
             _artistManager = artistManager;
+            _marketsManager = marketsManager;
+            _tierRepo = tierRepo;
         }
         #endregion Ctors
 
 
         #region Public methods
-        public async Task<ArtistSubscription> Create(long artistId, SubscriptionTier tier)
-                => await Create(artistId, tier, DateTime.Now);
-        public async Task<ArtistSubscription> Create(long artistId, SubscriptionTier tier, DateTime startingDate)
+        public async Task<ArtistSubscription> Create(long artistId, long tierId, List<long> marketIds)
+                => await Create(artistId, tierId, marketIds, DateTime.Now);
+        public async Task<ArtistSubscription> Create(long artistId, long tierId,
+                                                        List<long> marketIds, DateTime startingDate)
         {
+            var tier = await GetTierById(tierId);
             var toRet = new ArtistSubscription { 
                 ArtitstId = artistId,
                 StartDate = startingDate,
@@ -39,8 +48,17 @@ namespace Honoured.ArtistSubscriptions
                 StatusDate = DateTime.Now
             };
             await _repo.InsertAsync(toRet);
+            await _artistManager.UpdateAreas(artistId, marketIds);
             return toRet;
         }
         #endregion Public methods
+
+
+        #region Private methods
+        private async Task<SubscriptionTier> GetTierById(long tierId)
+        {
+            return await _tierRepo.GetAsync(tierId);
+        }
+        #endregion Private methods
     }
 }

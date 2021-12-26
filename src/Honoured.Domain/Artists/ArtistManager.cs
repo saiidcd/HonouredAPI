@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Honoured.ArtistSubscriptions;
+using Honoured.Markets;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,11 +15,13 @@ namespace Honoured.Artists
 
         #region Fields
         private readonly IArtistRepository _artistRepository;
+        private readonly MarketsManager _marketsManager;
         #endregion Fields
         #region Ctors
-        public ArtistManager(IArtistRepository repo)
+        public ArtistManager(IArtistRepository repo, MarketsManager marketsManager)
         {
             _artistRepository = repo;
+            _marketsManager = marketsManager;
         }
         #endregion Ctors
 
@@ -40,6 +44,19 @@ namespace Honoured.Artists
         public Artist CreateDummy(long id)
         {
             return new Artist(id);
+        }
+
+        public async Task<bool> UpdateAreas(long artistId, List<long> areaIds)
+        {
+            var existingArtist = await _artistRepository.GetAsync(artistId);
+            if(existingArtist == null)
+            {
+                throw new ArtistNotFoundException(artistId.ToString());
+            }
+            var markets = await _marketsManager.GetMarketsByIds(areaIds);
+            existingArtist.SubscribedMarkets = markets;
+            await _artistRepository.UpdateAsync(existingArtist);
+            return true;
         }
         #endregion Public Methods
     }

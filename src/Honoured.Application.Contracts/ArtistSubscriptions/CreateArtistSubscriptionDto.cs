@@ -1,5 +1,6 @@
 ﻿using Honoured.Artists;
 using System;
+using System.Collections.Generic;
 using Volo.Abp.Application.Dtos;
 
 namespace Honoured.ArtistSubscriptions
@@ -14,7 +15,7 @@ namespace Honoured.ArtistSubscriptions
 
         public long TierId { get; set; }
 
-        public CreateArtistDto ArtistInfo { get; set;
+        public CreateArtistDto ArtistInfo { get; set; }
 
         public List<long> AreaIds { get; set; }
         #endregion Props

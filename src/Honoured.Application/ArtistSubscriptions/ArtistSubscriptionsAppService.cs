@@ -38,9 +38,11 @@ namespace Honoured.ArtistSubscriptions
         }
         #endregion Ctors
         #region Implementation
-        public Task<ArtistSubscriptionDto> CreateAsync(CreateArtistSubscriptionDto input)
+        public async Task<ArtistSubscriptionDto> CreateAsync(CreateArtistSubscriptionDto input)
         {
-            throw new NotImplementedException();
+            var sub = await _subsManager.Create(input.ArtitstId, input.TierId, input.AreaIds);
+            var toRet = ObjectMapper.Map<ArtistSubscription, ArtistSubscriptionDto>(sub);
+            return toRet;
         }
 
         public Task DeleteAsync(long id)
