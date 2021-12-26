@@ -30,7 +30,7 @@ namespace Honoured.ArtLovers
 
         public int ActivePlacements { get; set; }
 
-        public List<Subscription> Subscriptions { get; set; }
+        public List<ArtLoverSubscription> Subscriptions { get; set; }
 
         public DateTime NextPlacementDate { get; set; }
 
@@ -59,17 +59,17 @@ namespace Honoured.ArtLovers
         }
 
         #region Subscriptioin Operations
-        public Subscription AddSubscription(Subscription toAdd)
+        public ArtLoverSubscription AddSubscription(ArtLoverSubscription toAdd)
         {
             throw new NotImplementedException("AddSubscription in ArtLover");
         }
 
-        public void RemoveSubscription(Subscription toRemove)
+        public void RemoveSubscription(ArtLoverSubscription toRemove)
         {
             throw new NotImplementedException("RemoveSubscription in ArtLover");
         }
 
-        public void UpdateSubscription(Subscription toUpdate)
+        public void UpdateSubscription(ArtLoverSubscription toUpdate)
         {
             throw new NotImplementedException("UpdateSubscription in ArtLover");
         }

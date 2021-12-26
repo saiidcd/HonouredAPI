@@ -11,8 +11,8 @@ using Volo.Abp.EntityFrameworkCore;
 
 namespace Honoured.Subscriptions
 {
-    public class EfCoreSubscriptionRepository : EfCoreRepository<HonouredDbContext, Subscription, long>,
-                                                ISubscriptionRepository
+    public class EfCoreSubscriptionRepository : EfCoreRepository<HonouredDbContext, ArtLoverSubscription, long>,
+                                                IArtLoverSubscriptionRepository
     {
 
         #region Ctors
@@ -23,7 +23,7 @@ namespace Honoured.Subscriptions
 
 
         #region Implementations
-        public async Task<List<Subscription>> GetDueSubscriptionsBydateAsync(DateTime mindate, DateTime maxDate,
+        public async Task<List<ArtLoverSubscription>> GetDueSubscriptionsBydateAsync(DateTime mindate, DateTime maxDate,
                                                                                 int skipCount,
                                                                                     int maxResultCount,
                                                                                     string sorting,

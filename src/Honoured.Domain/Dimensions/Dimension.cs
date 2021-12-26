@@ -5,7 +5,7 @@ using Volo.Abp.Domain.Entities;
 namespace Honoured.Dimensions
 {
     /// <summary>
-    /// This class represents a dimesion. Each Artlover's subscription
+    /// This class represents a dimesion. Each Artlover's ArtLoverSubscription
     /// will have a dimension assigned to it that would limit the size
     /// of the piece they can receive.
     /// Each dimension has a minimum/maximum height and width associated with it.

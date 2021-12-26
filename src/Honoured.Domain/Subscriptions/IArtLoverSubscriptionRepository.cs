@@ -7,9 +7,9 @@ using Volo.Abp.Domain.Repositories;
 
 namespace Honoured.Subscriptions
 {
-    public interface ISubscriptionRepository : IRepository<Subscription,long>
+    public interface IArtLoverSubscriptionRepository : IRepository<ArtLoverSubscription,long>
     {
-        Task<List<Subscription>> GetDueSubscriptionsBydateAsync(DateTime mindate, DateTime maxDate,
+        Task<List<ArtLoverSubscription>> GetDueSubscriptionsBydateAsync(DateTime mindate, DateTime maxDate,
            int skipCount,
            int maxResultCount,
            string sorting,

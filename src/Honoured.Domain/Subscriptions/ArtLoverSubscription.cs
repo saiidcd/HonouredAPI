@@ -4,14 +4,11 @@ using Honoured.Models;
 using Honoured.Placements;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Volo.Abp.Domain.Entities;
 
 namespace Honoured.Subscriptions
 {
-    public class Subscription : Entity<long>
+    public class ArtLoverSubscription : Entity<long>
     {
 
         #region Props

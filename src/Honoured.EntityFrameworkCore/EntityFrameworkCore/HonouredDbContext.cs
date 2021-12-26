@@ -100,7 +100,7 @@ namespace Honoured.EntityFrameworkCore
 
         public DbSet<Placement> Placements { get; set; }
 
-        public DbSet<Subscription> Subscriptions { get; set; }
+        public DbSet<ArtLoverSubscription> Subscriptions { get; set; }
 
         public DbSet<Delivery> Deliveries { get; set; }
 
@@ -284,7 +284,7 @@ namespace Honoured.EntityFrameworkCore
             });
 
 
-            builder.Entity<Subscription>(b =>
+            builder.Entity<ArtLoverSubscription>(b =>
             {
                 b.ToTable(HonouredConsts.DbTablePrefix + "Subscriptions", HonouredConsts.DbSchema);
                 b.ConfigureByConvention();

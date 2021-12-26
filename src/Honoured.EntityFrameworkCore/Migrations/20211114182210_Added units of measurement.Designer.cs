@@ -723,7 +723,7 @@ namespace Honoured.Migrations
                     b.ToTable("AppPlacements");
                 });
 
-            modelBuilder.Entity("Honoured.Subscriptions.Subscription", b =>
+            modelBuilder.Entity("Honoured.Subscriptions.ArtLoverSubscription", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -2767,7 +2767,7 @@ namespace Honoured.Migrations
                         .WithMany()
                         .HasForeignKey("PersonalDetailsId");
 
-                    b.HasOne("Honoured.ArtistSubscriptions.ArtistSubscription", "Subscription")
+                    b.HasOne("Honoured.ArtistSubscriptions.ArtistSubscription", "ArtLoverSubscription")
                         .WithMany()
                         .HasForeignKey("SubscriptionId");
 
@@ -2775,7 +2775,7 @@ namespace Honoured.Migrations
 
                     b.Navigation("PersonalDetails");
 
-                    b.Navigation("Subscription");
+                    b.Navigation("ArtLoverSubscription");
                 });
 
             modelBuilder.Entity("Honoured.Artists.ArtistDiscipline", b =>
@@ -2868,12 +2868,12 @@ namespace Honoured.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Honoured.Subscriptions.Subscription", null)
+                    b.HasOne("Honoured.Subscriptions.ArtLoverSubscription", null)
                         .WithMany("CurrentPlacements")
                         .HasForeignKey("SubscriptionId");
                 });
 
-            modelBuilder.Entity("Honoured.Subscriptions.Subscription", b =>
+            modelBuilder.Entity("Honoured.Subscriptions.ArtLoverSubscription", b =>
                 {
                     b.HasOne("Honoured.ArtLovers.ArtLover", null)
                         .WithMany("Subscriptions")
@@ -3204,7 +3204,7 @@ namespace Honoured.Migrations
                     b.Navigation("ContactPoints");
                 });
 
-            modelBuilder.Entity("Honoured.Subscriptions.Subscription", b =>
+            modelBuilder.Entity("Honoured.Subscriptions.ArtLoverSubscription", b =>
                 {
                     b.Navigation("CurrentPlacements");
                 });

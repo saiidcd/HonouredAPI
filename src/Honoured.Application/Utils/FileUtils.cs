@@ -153,6 +153,7 @@ namespace Honoured.Utils
                 // With the file signatures provided in the _fileSignature
                 // dictionary, the following code tests the input content's
                 // file signature.
+                return true;
                 var signatures = FileSignature[ext];
                 var headerBytes = reader.ReadBytes(signatures.Max(m => m.Length));
 

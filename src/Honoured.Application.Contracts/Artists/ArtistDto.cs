@@ -9,7 +9,7 @@ namespace Honoured.Artists
 {
     public class ArtistDto : EntityDto<long>
     {
-        public PersonDTO PersonalDetails { get; set; }
+        //public PersonDTO PersonalDetails { get; set; }
         //public string Name { get; set; }
 
         public string First { get; set; }

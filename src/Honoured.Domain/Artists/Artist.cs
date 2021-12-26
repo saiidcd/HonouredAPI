@@ -37,14 +37,14 @@ namespace Honoured.Artists
 
         public List<ArtDiscipline> Disciplines { get; set; }
 
-        public ArtistSubscription Subscription { get; set; }
+        public ArtistSubscription ArtLoverSubscription { get; set; }
 
         public string Key 
         { 
             get 
             {
                 return PersonalDetails==null ? "":
-                        $"{PersonalDetails.First.ToLower()};{PersonalDetails.Middle.ToLower()};{PersonalDetails.Last.ToLower()};{PersonalDetails.DOB.Date.ToShortDateString()}";
+                        $"{PersonalDetails.First?.ToLower()};{PersonalDetails.Middle?.ToLower()};{PersonalDetails.Last?.ToLower()};{PersonalDetails.DOB.Date.ToShortDateString()}";
             } 
             set { } 
         }
@@ -59,7 +59,7 @@ namespace Honoured.Artists
 
         public double GetMonthlyCost() 
         {
-            return SubscribedMarkets.Count(m => m.Status == GeneralStatus.Active) * Subscription.Tier.Price;
+            return SubscribedMarkets.Count(m => m.Status == GeneralStatus.Active) * ArtLoverSubscription.Tier.Price;
         }
         #endregion Public Methods
 

@@ -235,8 +235,8 @@ namespace Honoured.Artists
             // todo: validate and persist formModel
             //_logger.LogInformation(formModel.ToString());
             //MyFiles.Add(formModel);
-            string iconString = ImageUtils.SaveArtistIconAndGetSmallString(IconSize.small, filePath, formModel.UserId,
-                                                                            Path.GetExtension(formModel.TrustedFileName));
+            string iconString = ImageUtils.SaveArtistIconAndGetSmallString(IconSize.small, filePath, formModel.UserId, trustedFilePath);
+                                                                            //Path.GetExtension(formModel.TrustedFileName));
            // var old = await GetAsync(formModel.ArtworkId);
             //var updt = ObjectMapper.Map<ArtistDto, UpdateArtistDto>(old);
             //updt.ImageFile = trustedFilePath;
@@ -252,8 +252,9 @@ namespace Honoured.Artists
         #region Private Methods
         private async Task<Artist> GetArtistWithEmail(string email)
         {
-            var q = await _artistRepository.GetQueryableAsync();
-            var artist = q.FirstOrDefault(a => a.PersonalDetails.Email == email);
+            var q = await _artistRepository.WithDetailsAsync(a => a.PersonalDetails);
+            var artist = q.Where(a => a.PersonalDetails.Email.ToLower().Equals(email.ToLower()))
+                            .FirstOrDefault(a => a.PersonalDetails.Email == email);
             if (artist == null)
             {
                 throw new ArtistNotFoundException(email);

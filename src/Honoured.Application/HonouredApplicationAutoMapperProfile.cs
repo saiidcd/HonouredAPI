@@ -45,8 +45,7 @@ namespace Honoured
                 //.Ignore(d => d.Addresses)
                 .Ignore(d => d.BillingAddress)
                 .Ignore(d => d.ContactPoints)
-                .Ignore(d => d.DeliveryPoints)
-                .ReverseMap();
+                .Ignore(d => d.DeliveryPoints);
 
             CreateMap<Artist, ArtistDto>()
                 .ForMember(d => d.ArtistId, a => a.MapFrom(p => p.Id))
@@ -154,7 +153,8 @@ namespace Honoured
                 .ForMember(m => m.City, opt => opt.MapFrom(a => a.Addresses.Any() ? a.Addresses.First().City :""))
                 .ForMember(m => m.Province, opt => opt.MapFrom(a => a.Addresses.Any() ? a.Addresses.First().Province :""))
                 .ForMember(m => m.PostalCode, opt => opt.MapFrom(a => a.Addresses.Any() ? a.Addresses.First().PostalCode :""))
-                .ForMember(m => m.Country, opt => opt.MapFrom(a => a.Addresses.Any() ? a.Addresses.First().Country :""));
+                .ForMember(m => m.Country, opt => opt.MapFrom(a => a.Addresses.Any() ? a.Addresses.First().Country :""))
+                .ReverseMap();
 
             CreateMap<ArtLoverDto, SubscriberDto>()
                 .ForMember(m => m.Street1, opt => opt.MapFrom(a => a.Addresses.Any() ? a.Addresses.First().Street1 : ""))

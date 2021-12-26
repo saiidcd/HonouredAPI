@@ -1,6 +1,7 @@
 ﻿using Honoured.Enumerations;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -118,32 +119,48 @@ namespace Honoured.Utils
             return GetBase64ForImage(IconFilePath);
         }
 
-        public static string SaveArtistIconAndGetSmallString(IconSize size, string filePath, long artistId, string extension)
+        public static string SaveArtistIconAndGetSmallString(IconSize size, string filePath, long artistId, string originalFile)
         {
-            var toRet = string.Empty;
-
-            foreach (var iconSize in Enum.GetValues<IconSize>())
+            Image OriginalImage = null;
+            try
             {
-                var fileName = Path.Combine(filePath, GetIconNamebySize(artistId,size,extension));
-                if (File.Exists(fileName))
-                {
-                    File.Delete(fileName);
-                }
-                var originalFile = Path.Combine(filePath, fileName);
                 if (!File.Exists(originalFile))
                 {
                     throw new FileNotFoundException("Original image file not found!", originalFile);
                 }
-                var OriginalImage = Image.FromFile(originalFile);
-                var resized = GetScaledImage(OriginalImage, size);
-
-                resized.Save(fileName);
-                if (iconSize== IconSize.small)
+                var toRet = string.Empty;
+                var extension = Path.GetExtension(originalFile);
+                OriginalImage= Image.FromFile(originalFile);
+                foreach (var iconSize in Enum.GetValues<IconSize>())
                 {
-                    toRet = GetBase64ForImage(fileName);
+                    var fileName = Path.Combine(filePath, GetIconNamebySize(artistId,size,extension));
+                    if (File.Exists(fileName))
+                    {
+                        File.Delete(fileName);
+                    }
+                    //var originalFile = Path.Combine(filePath, fileName);
+                    var resized = GetScaledImage(OriginalImage, size);
+
+                    resized.Save(fileName);
+                    resized.Dispose();
+                    if (iconSize== IconSize.small)
+                    {
+                        toRet = GetBase64ForImage(fileName);
+                    }
+                }
+                return toRet;
+            }catch (Exception e)
+            {
+                Debug.WriteLine(e.StackTrace);
+                throw e;
+            }
+            finally
+            {
+                if (OriginalImage != null)
+                {
+                    OriginalImage.Dispose();
                 }
             }
-            return toRet;
         }
 
         private static string GetIconNamebySize(long artistId, IconSize size, string extension)
