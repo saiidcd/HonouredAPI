@@ -19,6 +19,8 @@ namespace Honoured.ArtistSubscriptions
         public DateTime StatusDate { get; set; }
 
         public long TierId { get; set; }
+
+        public List<long> AreaIds { get; set; }
         #endregion Props
     }
 }

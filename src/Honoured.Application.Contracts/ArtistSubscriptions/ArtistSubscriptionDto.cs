@@ -20,6 +20,8 @@ namespace Honoured.ArtistSubscriptions
         public ArtistSubscriptionsStatus Status { get; set; }
 
         public DateTime StatusDate { get; set; }
+
+        public List<long> AreaIds { get; set; }
         #endregion Props
     }
 }

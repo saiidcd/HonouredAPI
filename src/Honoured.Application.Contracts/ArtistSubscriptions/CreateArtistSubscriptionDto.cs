@@ -14,7 +14,9 @@ namespace Honoured.ArtistSubscriptions
 
         public long TierId { get; set; }
 
-        public CreateArtistDto ArtistInfo { get; set; }
+        public CreateArtistDto ArtistInfo { get; set;
+
+        public List<long> AreaIds { get; set; }
         #endregion Props
     }
 }
