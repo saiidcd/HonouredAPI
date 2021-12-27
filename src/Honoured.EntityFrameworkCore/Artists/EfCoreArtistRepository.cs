@@ -61,6 +61,18 @@ namespace Honoured.Artists
                 .ToListAsync();
             return toRet;
         }
+
+        public async Task<Artist> GetArtistByEmail(string email)
+        {
+            var context = await GetDbContextAsync();
+            IQueryable list = context.Artists
+                .Include(a => a.PersonalDetails)
+                                    .Where(
+                 a=> a.PersonalDetails.Email == email
+                )
+                                    ;
+            return list.FirstOrDefault();
+        }
         #endregion IArtistRepository Implementation
         #endregion Implementations
     }

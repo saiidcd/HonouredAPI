@@ -18,5 +18,6 @@ namespace Honoured.Artists
             string sorting,
             string filter = null
         );
+        Task<Artist> GetArtistByEmail(string email);
     }
 }

@@ -259,7 +259,7 @@ namespace Honoured.EntityFrameworkCore
             builder.Entity<Artist>(b =>
             {
                 b.ToTable(HonouredConsts.DbTablePrefix + "Artists", HonouredConsts.DbSchema);
-                b.HasOne<ArtistPersonalInfo>(a => a.PersonalDetails);
+                b.HasOne<ArtistPersonalInfo>(a => a.PersonalDetails).WithOne().HasForeignKey<ArtistPersonalInfo>(a=>a.ParentId);
                 b.HasOne<ContactPoint>(c => c.DefaultContactPoint);
                 b.HasMany<ArtWork>(a => a.Portfolio).WithOne(a => a.Artist);
                 b.HasMany<Market>(a => a.SubscribedMarkets).WithMany(m => m.SubscribedArtists)

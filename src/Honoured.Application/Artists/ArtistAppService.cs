@@ -252,9 +252,7 @@ namespace Honoured.Artists
         #region Private Methods
         private async Task<Artist> GetArtistWithEmail(string email)
         {
-            var q = await _artistRepository.WithDetailsAsync(a => a.PersonalDetails);
-            var artist = q.Where(a => a.PersonalDetails.Email.ToLower().Equals(email.ToLower()))
-                            .FirstOrDefault(a => a.PersonalDetails.Email == email);
+            var artist = await _artistRepository.GetArtistByEmail(email);
             if (artist == null)
             {
                 throw new ArtistNotFoundException(email);
