@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Honoured.ArtDisciplines;
 using Honoured.Artists;
+using Honoured.ArtistSubscriptions;
 using Honoured.ArtLovers;
 using Honoured.ArtWorks;
 using Honoured.Countries;
@@ -164,6 +165,14 @@ namespace Honoured
                 .ForMember(m => m.PostalCode, opt => opt.MapFrom(a => a.Addresses.Any() ? a.Addresses.First().PostalCode : ""))
                 .ForMember(m => m.Country, opt => opt.MapFrom(a => a.Addresses.Any() ? a.Addresses.First().Country : ""));
             #endregion Subscribers
+
+
+            #region ArtistSubscriptions
+            CreateMap<ArtistSubscription, ArtistSubscriptionDto>()
+                .ForMember(m=> m.TierId, opt=>opt.MapFrom(a=>a.Tier.Id));
+            CreateMap<ArtistSubscriptionDto, ArtistSubscription>()
+                .Ignore(a=>a.Tier);
+            #endregion ArtistSubscriptions
         }
     }
 }

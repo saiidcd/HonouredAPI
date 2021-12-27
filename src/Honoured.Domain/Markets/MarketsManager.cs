@@ -25,6 +25,8 @@ namespace Honoured.Markets
 
 
         #region Public Methods
+        public Task<List<Market>> GetActive() => GetAll(true);
+
         public Task<List<Market>> GetAll(bool isActiveOnly = true)
         {
             if (isActiveOnly)

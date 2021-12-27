@@ -1,5 +1,6 @@
 ﻿using Honoured.Artists;
 using Honoured.ArtistSubscriptions;
+using Honoured.Markets;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -17,20 +18,38 @@ namespace Honoured.Facade
         private ArtistAppService _artistService;
         private ArtistSubscriptionsAppService _subsService;
         private ArtistManager _artistManager;
+        private ArtistSubsriptionManager _subsManager;
+        private MarketsManager _marketsManager;
         #endregion Fields
 
         #region Ctor
         public AppSubscribe(ArtistAppService artistService, ArtistSubscriptionsAppService subsService,
-            ArtistManager artistManager)
+            ArtistManager artistManager, ArtistSubsriptionManager subsManager, MarketsManager marketsManager)
         {
             _artistService = artistService;
             _subsService = subsService;
             _artistManager = artistManager;
+            _subsManager = subsManager;
+            _marketsManager = marketsManager;
         }
         #endregion Ctor
 
 
         #region Public Methods
+
+        [Route("Subscriptions/Artist/PageInfo")]
+        public async Task<ArtistSubscriptionPageDto> GetSubscrptionPageInfo()
+        {
+            var tiers = await _subsManager.GetActiveTiers();
+            var markets = await _marketsManager.GetActive();
+            var toRet = new ArtistSubscriptionPageDto
+            {
+                AvailableTiers = ObjectMapper.Map<List<SubscriptionTier>, List<SubscriptionTierDto>>(tiers),
+                AvailablelMarkets = ObjectMapper.Map<List<Market>, List<MarketDto>>(markets)
+            };
+            return toRet;
+        }
+
         [Route("/Artist")]
         public async Task<ArtistSubscriptionDto> NewArtistSubscriptionAsync(CreateArtistSubscriptionDto newSub)
         {

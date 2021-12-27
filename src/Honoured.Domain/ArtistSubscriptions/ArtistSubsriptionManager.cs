@@ -36,6 +36,12 @@ namespace Honoured.ArtistSubscriptions
         #region Public methods
         public async Task<ArtistSubscription> Create(long artistId, long tierId, List<long> marketIds)
                 => await Create(artistId, tierId, marketIds, DateTime.Now);
+
+        public Task<List<SubscriptionTier>> GetActiveTiers()
+        {
+            return _tierRepo.GetListAsync(t=>t.Status== GeneralStatus.Active);
+        }
+
         public async Task<ArtistSubscription> Create(long artistId, long tierId,
                                                         List<long> marketIds, DateTime startingDate)
         {
