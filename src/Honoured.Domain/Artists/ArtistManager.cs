@@ -27,20 +27,6 @@ namespace Honoured.Artists
 
 
         #region Public Methods
-        public async Task<Artist> CreateAsync(string first, string middle, string last, DateTime dob)
-        {
-            Check.NotNullOrWhiteSpace(first, nameof(first));
-            Check.NotNullOrWhiteSpace(middle, nameof(middle));
-            Check.NotNullOrWhiteSpace(last, nameof(last));
-            Check.NotNull(dob, nameof(dob));
-
-            var existingArtist = await _artistRepository.FindArtisByKeyAsync(first, middle, last, dob);
-            if (existingArtist != null)
-            {
-                throw new ArtistAlreadyExistsException($"{first} {middle} {last} with Date of birth: {dob}");
-            }
-            return new Artist(first, middle, last, dob);
-        }
         public Artist CreateDummy(long id)
         {
             return new Artist(id);
@@ -58,6 +44,35 @@ namespace Honoured.Artists
             await _artistRepository.UpdateAsync(existingArtist);
             return true;
         }
+
+        public async Task Validate(Artist artist)=>
+            await Validate(artist.PersonalDetails.First, artist.PersonalDetails.Middle,
+                artist.PersonalDetails.Last, artist.PersonalDetails.DOB, artist.PersonalDetails.Email);
+        
         #endregion Public Methods
+
+
+        #region Private Methods
+        private async Task<bool> Validate(string first, string middle, string last, DateTime dob, string email)
+        {
+            Check.NotNullOrWhiteSpace(first, nameof(first));
+            Check.NotNullOrWhiteSpace(middle, nameof(middle));
+            Check.NotNullOrWhiteSpace(last, nameof(last));
+            Check.NotNull(dob, nameof(dob));
+
+            var existingArtist = await _artistRepository.FindArtisByKeyAsync(first, middle, last, dob);
+            if (existingArtist != null)
+            {
+                throw new ArtistAlreadyExistsException($"{first} {middle} {last} with Date of birth: {dob}");
+            }
+
+            existingArtist = await _artistRepository.GetArtistByEmail(email);
+            if (existingArtist != null)
+            {
+                throw new ArtistAlreadyExistsException($"Email: {email}");
+            }
+            return true;
+        }
+        #endregion Private Methods
     }
 }

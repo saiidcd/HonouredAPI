@@ -21,7 +21,7 @@ namespace Honoured.Artists
         [NotMapped]
         public ArtistPersonalInfo PersonalDetails { get; set; }
 
-        public long PersonalDetailsId { get; set; }
+        //public long PersonalDetailsId { get; set; }
 
         public ArtistStatus Status { get; set; }
 

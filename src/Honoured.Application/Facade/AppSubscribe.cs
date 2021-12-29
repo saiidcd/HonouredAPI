@@ -1,6 +1,9 @@
 ﻿using Honoured.Artists;
 using Honoured.ArtistSubscriptions;
+using Honoured.ArtLovers;
+using Honoured.DTOs;
 using Honoured.Markets;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -20,17 +23,20 @@ namespace Honoured.Facade
         private ArtistManager _artistManager;
         private ArtistSubsriptionManager _subsManager;
         private MarketsManager _marketsManager;
+        private ArtLoverAppService _artLoverService;
         #endregion Fields
 
         #region Ctor
         public AppSubscribe(ArtistAppService artistService, ArtistSubscriptionsAppService subsService,
-            ArtistManager artistManager, ArtistSubsriptionManager subsManager, MarketsManager marketsManager)
+            ArtistManager artistManager, ArtistSubsriptionManager subsManager, MarketsManager marketsManager,
+            ArtLoverAppService artLoverService)
         {
             _artistService = artistService;
             _subsService = subsService;
             _artistManager = artistManager;
             _subsManager = subsManager;
             _marketsManager = marketsManager;
+            _artLoverService = artLoverService;
         }
         #endregion Ctor
 
@@ -48,6 +54,30 @@ namespace Honoured.Facade
                 AvailablelMarkets = ObjectMapper.Map<List<Market>, List<MarketDto>>(markets)
             };
             return toRet;
+        }
+
+        [AllowAnonymous]
+        [Route("Subscriptions")]
+        [HttpPost]
+        public async Task<SubscriberDto> Register(SubscriberDto subscriber)
+        {
+            long newId = -1L;
+            if (subscriber.IsArtist)
+            {
+                var newartist = ObjectMapper.Map<SubscriberDto, CreateArtistDto>(subscriber);
+                var artistDto = await _artistService.CreateAsync(newartist);
+                newId = artistDto.Id;
+            }
+
+            if (subscriber.IsArtLover)
+            {
+                var newartlover = ObjectMapper.Map<SubscriberDto, CreateArtLoverDto>(subscriber);
+                var artLoverDto = await _artLoverService.CreateAsync(newartlover);
+                newId = newId <= 0 ? artLoverDto.Id : newId;
+            }
+            subscriber.Id = newId;
+            subscriber.ArtistId = newId;
+            return subscriber;
         }
 
         [Route("/Artist")]

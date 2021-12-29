@@ -109,6 +109,8 @@ namespace Honoured.EntityFrameworkCore
         public DbSet<Country> Countries { get; set; }
 
         public DbSet<Dimension> Dimensions { get; set; }
+
+        public DbSet<SubscriptionTier> SubscriptionTiers { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
