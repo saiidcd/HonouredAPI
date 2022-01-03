@@ -16,12 +16,14 @@ namespace Honoured.ArtistSubscriptions
         private ArtistManager _artistManager;
         private MarketsManager _marketsManager;
         private IRepository<SubscriptionTier, long> _tierRepo;
+        private ISubscriptionTiersRepository _tiersRepository;
         #endregion Fields
 
 
         #region Ctors
         public ArtistSubsriptionManager(IArtistSubscriptionRepository repo,
                                         IRepository<SubscriptionTier, long> tierRepo,
+                                        ISubscriptionTiersRepository subscriptionTiers,
                                         ArtistManager artistManager,
                                         MarketsManager marketsManager)
         {
@@ -29,6 +31,7 @@ namespace Honoured.ArtistSubscriptions
             _artistManager = artistManager;
             _marketsManager = marketsManager;
             _tierRepo = tierRepo;
+            _tiersRepository = subscriptionTiers;
         }
         #endregion Ctors
 
@@ -37,9 +40,10 @@ namespace Honoured.ArtistSubscriptions
         public async Task<ArtistSubscription> Create(long artistId, long tierId, List<long> marketIds)
                 => await Create(artistId, tierId, marketIds, DateTime.Now);
 
-        public Task<List<SubscriptionTier>> GetActiveTiers()
+        public async Task<List<SubscriptionTier>> GetActiveTiers()
         {
-            return _tierRepo.GetListAsync(t=>t.Status== GeneralStatus.Active);
+            return await _tiersRepository.GetTiers(true);
+            //return await _tierRepo.GetListAsync(t=>t.Status== GeneralStatus.Active,true);
         }
 
         public async Task<ArtistSubscription> Create(long artistId, long tierId,

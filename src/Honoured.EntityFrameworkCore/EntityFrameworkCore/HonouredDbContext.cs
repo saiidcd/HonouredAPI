@@ -282,6 +282,8 @@ namespace Honoured.EntityFrameworkCore
             builder.Entity<SubscriptionTier>(b =>
             {
                 b.ToTable(HonouredConsts.DbTablePrefix + "SubscriptionTiers", HonouredConsts.DbSchema);
+               // b.HasOne(typeof(Dimension), "MaxDimension").WithOne();
+               // b.HasOne(t => t.MaxDimension,"MaxDimension").WithOne();
                 b.ConfigureByConvention();
             });
 

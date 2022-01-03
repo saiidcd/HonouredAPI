@@ -1,4 +1,5 @@
-﻿using Honoured.Enumerations;
+﻿using Honoured.Dimensions;
+using Honoured.Enumerations;
 using System;
 using System.Collections.Generic;
 using System.Text;

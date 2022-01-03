@@ -5,6 +5,7 @@ using Honoured.DTOs;
 using Honoured.Markets;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,7 +43,7 @@ namespace Honoured.Facade
 
 
         #region Public Methods
-
+        [AllowAnonymous]
         [Route("Subscriptions/Artist/PageInfo")]
         public async Task<ArtistSubscriptionPageDto> GetSubscrptionPageInfo()
         {

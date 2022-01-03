@@ -16,6 +16,8 @@ namespace Honoured.Markets
 
         public GeneralStatus Status { get; set; }
 
+        public string URL { get; set; }
+
 
         #endregion Props
     }
