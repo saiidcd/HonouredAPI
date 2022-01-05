@@ -29,6 +29,8 @@ namespace Honoured.Markets
 
         public GeneralStatus Status { get; set; }
 
+        public string URL { get; set; }
+
         public string CountryIds { 
             get=>_countryIds.JoinAsString(","); 
             set=> _countryIds = string.IsNullOrEmpty(value) ? new List<int>() :  value.Split(",").Select(i => int.Parse(i)).ToList();

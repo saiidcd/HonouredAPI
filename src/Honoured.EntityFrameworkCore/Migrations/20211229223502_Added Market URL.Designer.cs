@@ -4,15 +4,17 @@ using Honoured.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Volo.Abp.EntityFrameworkCore;
 
 namespace Honoured.Migrations
 {
     [DbContext(typeof(HonouredDbContext))]
-    partial class HonouredDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211229223502_Added Market URL")]
+    partial class AddedMarketURL
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -221,9 +223,6 @@ namespace Honoured.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long?>("MaxDimensionId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -240,8 +239,6 @@ namespace Honoured.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MaxDimensionId");
 
                     b.ToTable("AppSubscriptionTiers");
                 });
@@ -2759,15 +2756,6 @@ namespace Honoured.Migrations
                         .HasForeignKey("TierId");
 
                     b.Navigation("Tier");
-                });
-
-            modelBuilder.Entity("Honoured.ArtistSubscriptions.SubscriptionTier", b =>
-                {
-                    b.HasOne("Honoured.Dimensions.Dimension", "MaxDimension")
-                        .WithMany()
-                        .HasForeignKey("MaxDimensionId");
-
-                    b.Navigation("MaxDimension");
                 });
 
             modelBuilder.Entity("Honoured.Artists.Artist", b =>

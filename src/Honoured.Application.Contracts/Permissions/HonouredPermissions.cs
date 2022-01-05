@@ -72,5 +72,12 @@
             public const string Update = Default + ".Update";
             public const string Delete = Default + ".Delete";
         }
+        public static class ArtistSubscriptions
+        {
+            public const string Default = GroupName + ".ArtistSubscriptions";
+            public const string Create = Default + ".Create";
+            public const string Update = Default + ".Update";
+            public const string Delete = Default + ".Delete";
+        }
     }
 }

@@ -109,6 +109,8 @@ namespace Honoured.EntityFrameworkCore
         public DbSet<Country> Countries { get; set; }
 
         public DbSet<Dimension> Dimensions { get; set; }
+
+        public DbSet<SubscriptionTier> SubscriptionTiers { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -259,7 +261,7 @@ namespace Honoured.EntityFrameworkCore
             builder.Entity<Artist>(b =>
             {
                 b.ToTable(HonouredConsts.DbTablePrefix + "Artists", HonouredConsts.DbSchema);
-                b.HasOne<ArtistPersonalInfo>(a => a.PersonalDetails);
+                b.HasOne<ArtistPersonalInfo>(a => a.PersonalDetails).WithOne().HasForeignKey<ArtistPersonalInfo>(a=>a.ParentId);
                 b.HasOne<ContactPoint>(c => c.DefaultContactPoint);
                 b.HasMany<ArtWork>(a => a.Portfolio).WithOne(a => a.Artist);
                 b.HasMany<Market>(a => a.SubscribedMarkets).WithMany(m => m.SubscribedArtists)
@@ -280,6 +282,8 @@ namespace Honoured.EntityFrameworkCore
             builder.Entity<SubscriptionTier>(b =>
             {
                 b.ToTable(HonouredConsts.DbTablePrefix + "SubscriptionTiers", HonouredConsts.DbSchema);
+               // b.HasOne(typeof(Dimension), "MaxDimension").WithOne();
+               // b.HasOne(t => t.MaxDimension,"MaxDimension").WithOne();
                 b.ConfigureByConvention();
             });
 

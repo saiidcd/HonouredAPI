@@ -1,21 +1,27 @@
 ﻿using Honoured.Enumerations;
-using Honoured.Markets;
 using System;
 using System.Collections.Generic;
-using Volo.Abp.Domain.Entities;
+using System.Text;
+using Volo.Abp.Application.Dtos;
 
 namespace Honoured.ArtistSubscriptions
 {
-    public class ArtistSubscription : Entity<long>
+    public class ArtistSubscriptionDto : EntityDto<long>
     {
+
+        #region Props
+
         public long ArtitstId { get; set; }
 
         public DateTime StartDate { get; set; }
 
-        public SubscriptionTier Tier { get; set; }
+        public long TierId { get; set; }
 
         public ArtistSubscriptionsStatus Status { get; set; }
 
         public DateTime StatusDate { get; set; }
+
+        public List<long> AreaIds { get; set; }
+        #endregion Props
     }
 }

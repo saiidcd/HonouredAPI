@@ -10,6 +10,7 @@ using Honoured.Markets;
 using Honoured.ArtistSubscriptions;
 using System.Linq;
 using Honoured.ArtDisciplines;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Honoured.Artists
 {
@@ -17,7 +18,10 @@ namespace Honoured.Artists
     {
 
         #region Properties
+        [NotMapped]
         public ArtistPersonalInfo PersonalDetails { get; set; }
+
+        //public long PersonalDetailsId { get; set; }
 
         public ArtistStatus Status { get; set; }
 
@@ -37,7 +41,7 @@ namespace Honoured.Artists
 
         public List<ArtDiscipline> Disciplines { get; set; }
 
-        public ArtistSubscription ArtLoverSubscription { get; set; }
+        public ArtistSubscription Subscription { get; set; }
 
         public string Key 
         { 
@@ -59,7 +63,7 @@ namespace Honoured.Artists
 
         public double GetMonthlyCost() 
         {
-            return SubscribedMarkets.Count(m => m.Status == GeneralStatus.Active) * ArtLoverSubscription.Tier.Price;
+            return SubscribedMarkets.Count(m => m.Status == GeneralStatus.Active) * Subscription.Tier.Price;
         }
         #endregion Public Methods
 

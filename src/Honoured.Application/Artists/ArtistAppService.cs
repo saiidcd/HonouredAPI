@@ -59,9 +59,15 @@ namespace Honoured.Artists
         [Authorize(HonouredPermissions.Artists.Create)]
         public async Task<ArtistDto> CreateAsync(CreateArtistDto input)
         {
-            var artist = await _artistManager.CreateAsync(input.First, input.Middle, input.Last, input.DOB);
-
+            var artist = ObjectMapper.Map<CreateArtistDto, Artist>(input);
+            await _artistManager.Validate(artist);
+            artist.PersonalDetails.Addresses = new List<Address>
+            {
+                ObjectMapper.Map<CreateArtistDto,Address>(input)
+            };
+            var uw =UnitOfWorkManager.Begin(new Volo.Abp.Uow.AbpUnitOfWorkOptions { IsolationLevel = System.Data.IsolationLevel.ReadUncommitted});
             await _artistRepository.InsertAsync(artist);
+            await  uw.SaveChangesAsync();
             return ObjectMapper.Map<Artist, ArtistDto>(artist);
         }
 
@@ -252,9 +258,7 @@ namespace Honoured.Artists
         #region Private Methods
         private async Task<Artist> GetArtistWithEmail(string email)
         {
-            var q = await _artistRepository.WithDetailsAsync(a => a.PersonalDetails);
-            var artist = q.Where(a => a.PersonalDetails.Email.ToLower().Equals(email.ToLower()))
-                            .FirstOrDefault(a => a.PersonalDetails.Email == email);
+            var artist = await _artistRepository.GetArtistByEmail(email);
             if (artist == null)
             {
                 throw new ArtistNotFoundException(email);

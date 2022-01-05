@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Honoured.ArtDisciplines;
 using Honoured.Artists;
+using Honoured.ArtistSubscriptions;
 using Honoured.ArtLovers;
 using Honoured.ArtWorks;
 using Honoured.Countries;
@@ -60,6 +61,21 @@ namespace Honoured
                 .Ignore(d => d.Id);
 
             CreateMap<ArtistDto, UpdateArtistDto>();
+            CreateMap<CreateArtistDto, ArtistPersonalInfo>()
+                //.ForMember(d=>d.DOB, a=>a.MapFrom(p=>p.DOB))
+                //.ForMember(d => d.First, a => a.MapFrom(p => p.First))
+                //.ForMember(d => d.Middle, a => a.MapFrom(p => p.Middle))
+                //.ForMember(d => d.Last, a => a.MapFrom(p => p.Last))
+                //.Ignore(d => d.ContactPoints)
+                .Ignore(d => d.Address)
+                //.Ignore(d => d.Addresses)
+                .Ignore(d => d.BillingAddress)
+                .Ignore(d => d.ContactPoints)
+                .Ignore(d => d.DeliveryPoints);
+
+            CreateMap<CreateArtistDto, Artist>()
+                .ForMember(d => d.PersonalDetails, a => a.MapFrom(src => src))
+                .Ignore(d => d.Id);
 
             #endregion Artist
 
@@ -163,7 +179,21 @@ namespace Honoured
                 .ForMember(m => m.Province, opt => opt.MapFrom(a => a.Addresses.Any() ? a.Addresses.First().Province : ""))
                 .ForMember(m => m.PostalCode, opt => opt.MapFrom(a => a.Addresses.Any() ? a.Addresses.First().PostalCode : ""))
                 .ForMember(m => m.Country, opt => opt.MapFrom(a => a.Addresses.Any() ? a.Addresses.First().Country : ""));
+
+
+            CreateMap<CreateArtistDto, SubscriberDto>().ReverseMap();
+            CreateMap<CreateArtLoverDto, SubscriberDto>().ReverseMap();
+            CreateMap<CreateArtistDto, Address>();
             #endregion Subscribers
+
+
+            #region ArtistSubscriptions
+            CreateMap<ArtistSubscription, ArtistSubscriptionDto>()
+                .ForMember(m=> m.TierId, opt=>opt.MapFrom(a=>a.Tier.Id));
+            CreateMap<ArtistSubscriptionDto, ArtistSubscription>()
+                .Ignore(a=>a.Tier);
+            CreateMap<SubscriptionTier, SubscriptionTierDto>();
+            #endregion ArtistSubscriptions
         }
     }
 }
